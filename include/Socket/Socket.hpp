@@ -1,12 +1,20 @@
 #pragma once
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+
 class Socket {
   public:
     Socket();
-    ~Socket();
+    Socket(int socketFD);
 
-    bool isValid() const;
+    Socket& bind(const int port);
+
+    Socket& close();
+
   protected:
 
-    int _socketFD;
+    int _sockFD;
+    sockaddr_in _sockAddr;
 };
