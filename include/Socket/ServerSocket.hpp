@@ -4,15 +4,17 @@
 
 #include "Socket/Socket.hpp"
 
+#define MAX_RECIEVE_LENGTH 256
+
 class ServerSocket : public Socket {
   public:
     ServerSocket& listen();
 
     ServerSocket& accept();
 
-    ServerSocket& send(std::string message);
+    void send(const std::string message) const;
 
-    std::string recieve();
+    std::string recieve() const;
 
   protected:
     int _connectionLimit = 50;

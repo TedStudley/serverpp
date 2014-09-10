@@ -1,30 +1,57 @@
 #include <Socket/SocketException.hpp>
 #include <Socket/ServerSocket.hpp>
+#include <cstring>
 #include <cerrno>
 
 #include <iostream>
 
-ServerSocket& ServerSocket::listen() {
-    int listenResult = ::listen(this->_sockFD, this->_connectionLimit);
+ServerSocket &ServerSocket::listen() {
+    int listenResult = ::listen(_sockFD, _connectionLimit);
+
     if (listenResult == -1) {
         throw SocketException(strerror(errno));
     }
-    std::cout << "Listening on socket " << this->_sockFD << std::endl;
+    std::cout << "Listening on socket " << _sockFD << std::endl;
+
     return (*this);
 }
 
-ServerSocket& ServerSocket::accept() {
-    socklen_t socketSize = sizeof(this->_sockAddr);
-    int acceptResult = ::accept(
-            this->_sockFD,
-            (sockaddr *) &(this->_sockAddr),
-            &socketSize);
+ServerSocket &ServerSocket::accept() {
+    socklen_t addressLength = sizeof(this->_sockAddr);
+    int acceptResult = ::accept(_sockFD, (sockaddr *) &_sockAddr, &addressLength);
+
     if (acceptResult == -1) {
         throw new SocketException(strerror(errno));
     }
-    ServerSocket& connectionSock = (* new ServerSocket);
+    ServerSocket &connectionSock = (*new ServerSocket(*this));
     connectionSock._sockAddr = this->_sockAddr;
     connectionSock._sockFD = acceptResult;
     std::cout << "Accepted new connection on socket " << acceptResult << std::endl;
     return connectionSock;
+}
+
+void ServerSocket::send(std::string message) const {
+    int sendResult = ::send(_sockFD, message.c_str(), message.size(), MSG_NOSIGNAL);
+
+    if (sendResult == -1) {
+        throw new SocketException(strerror(errno));
+    }
+}
+
+std::string ServerSocket::recieve() const {
+    char messageBuffer[MAX_RECIEVE_LENGTH + 1];
+    std::string message = "";
+
+    int recieveResult = MAX_RECIEVE_LENGTH;
+    do {
+        memset(messageBuffer, 0, MAX_RECIEVE_LENGTH + 1);
+        recieveResult = ::recv(_sockFD, messageBuffer, MAX_RECIEVE_LENGTH, 0);
+        message.append(messageBuffer);
+    } while (recieveResult == MAX_RECIEVE_LENGTH);
+
+    if (recieveResult == -1) {
+        throw new SocketException(strerror(errno));
+    }
+
+    return message;
 }
