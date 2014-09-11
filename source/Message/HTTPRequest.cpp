@@ -1,5 +1,7 @@
 #include <Message/HTTPRequest.hpp>
 
+#include <vector>
+#include <sstream>
 #include <string>
 
 // =====================================
@@ -7,7 +9,9 @@
 // =====================================
 
 std::string HTTPRequest::toString() const {
-    return "request";
+    std::stringstream requestStream;
+
+    return requestStream.str();
 }
 
 HTTPRequest& HTTPRequest::fromString(std::string requestString) {

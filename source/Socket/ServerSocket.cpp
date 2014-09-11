@@ -38,7 +38,7 @@ void ServerSocket::send(std::string message) const {
     }
 }
 
-std::string ServerSocket::recieve() const {
+std::string ServerSocket::receive() const {
     char messageBuffer[MAX_RECIEVE_LENGTH + 1];
     std::string message = "";
 

@@ -14,7 +14,7 @@ class ServerSocket : public Socket {
 
     void send(const std::string message) const;
 
-    std::string recieve() const;
+    std::string receive() const;
 
   protected:
     int _connectionLimit = 50;

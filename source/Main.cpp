@@ -17,7 +17,7 @@ int main() {
         serverSock.listen();
 
         ServerSocket connectionSock = serverSock.accept();
-        std::string message = connectionSock.recieve();
+        std::string message = connectionSock.receive();
         std::cout << message << std::endl;
         connectionSock.send("this is a test!");
         connectionSock.close();
