@@ -42,7 +42,7 @@ protected:
     std::string _content;
 };
 
-class MessageBuilder : private Message {
+class MessageBuilder : protected Message {
 public:
     MessageBuilder& setHTTPVersion(const std::string httpVersion);
 
