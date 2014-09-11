@@ -18,11 +18,19 @@ protected:
     std::string _requestURI;
 };
 
-class HTTPRequestBuilder : private HTTPRequest, public MessageBuilder {
+class HTTPRequestBuilder : private HTTPRequest {
 public:
     HTTPRequestBuilder& setMethod(const std::string method);
 
     HTTPRequestBuilder& setRequestURI(const std::string requestURI);
+
+    HTTPRequestBuilder& setHTTPVersion(const std::string httpVersion);
+
+    HTTPRequestBuilder& addHeader(const Header header);
+    HTTPRequestBuilder& addHeader(const std::string name, const std::string value);
+    HTTPRequestBuilder& addHeaders(const std::vector<Header> headers);
+
+    HTTPRequestBuilder& setContent(const std::string content);
 
     HTTPRequest build();
 };

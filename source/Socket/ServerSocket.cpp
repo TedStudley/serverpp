@@ -31,7 +31,7 @@ ServerSocket &ServerSocket::accept() {
 }
 
 void ServerSocket::send(std::string message) const {
-    int sendResult = ::send(_sockFD, message.c_str(), message.size(), MSG_NOSIGNAL);
+    int sendResult = ::send(_sockFD, message.c_str(), (int) message.size(), MSG_NOSIGNAL);
 
     if (sendResult == -1) {
         throw new SocketException(strerror(errno));

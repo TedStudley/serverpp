@@ -2,24 +2,28 @@
 #include <Socket/SocketException.hpp>
 #include <Socket/ServerSocket.hpp>
 #include <Message/HTTPRequest.hpp>
+#include <Message/HTTPResponse.hpp>
 
 int main() {
-    ServerSocket serverSock;
+    ServerSocket serverSock = ServerSocket();
     try {
-        HTTPRequestBuilder requestBuilder;
-
-        HTTPRequest request = requestBuilder.build();
-        std::cout << request.toString() << std::endl;
-
-        serverSock.bind(5000);
-
+        serverSock.bind(5001);
 
         serverSock.listen();
 
         ServerSocket connectionSock = serverSock.accept();
         std::string message = connectionSock.receive();
-        std::cout << message << std::endl;
-        connectionSock.send("this is a test!");
+        HTTPRequest request = HTTPRequest().fromString(message);
+
+        std::cout << request.toString() << std::endl;
+
+        HTTPResponse response = HTTPResponseBuilder()
+                .setHTTPVersion("HTTP/1.1")
+                .setStatusCode(400)
+                .setReasonPhrase("OK")
+                .setContent("test").build();
+
+        connectionSock.send(response.toString());
         connectionSock.close();
         serverSock.close();
         return 0;
