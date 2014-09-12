@@ -24,14 +24,12 @@ Socket::Socket() {
     if (sockResult == -1) {
         throw SocketException(strerror(errno));
     }
-    std::cout << "Created socket " << _sockFD << std::endl;
 }
 
 Socket::Socket(const int sockFD) : Socket() {
     memset(&_sockAddr, 0, sizeof(_sockAddr));
 
     this->_sockFD = sockFD;
-    std::cout << "Copied socket " << _sockFD << std::endl;
 }
 
 Socket &Socket::bind(const int port) {
@@ -41,7 +39,6 @@ Socket &Socket::bind(const int port) {
     if (::bind(this->_sockFD, (struct sockaddr *) &_sockAddr, sizeof(_sockAddr)) == -1) {
         throw SocketException(strerror(errno));
     }
-    std::cout << "Bound socket " << _sockFD << " to port " << port << std::endl;
     return (*this);
 }
 
@@ -49,6 +46,5 @@ Socket &Socket::close() {
     if (::close(_sockFD) == -1) {
         throw SocketException(strerror(errno));
     }
-    std::cout << "Closed socket " << _sockFD << std::endl;
     return (*this);
 }

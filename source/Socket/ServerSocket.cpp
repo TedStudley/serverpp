@@ -5,18 +5,17 @@
 
 #include <iostream>
 
-ServerSocket &ServerSocket::listen() {
+ServerSocket& ServerSocket::listen() {
     int listenResult = ::listen(_sockFD, _connectionLimit);
 
     if (listenResult == -1) {
         throw SocketException(strerror(errno));
     }
-    std::cout << "Listening on socket " << _sockFD << std::endl;
 
     return (*this);
 }
 
-ServerSocket &ServerSocket::accept() {
+ServerSocket& ServerSocket::accept() {
     socklen_t addressLength = sizeof(this->_sockAddr);
     int acceptResult = ::accept(_sockFD, (sockaddr *) &_sockAddr, &addressLength);
 
@@ -26,12 +25,11 @@ ServerSocket &ServerSocket::accept() {
     ServerSocket &connectionSock = (*new ServerSocket(*this));
     connectionSock._sockAddr = this->_sockAddr;
     connectionSock._sockFD = acceptResult;
-    std::cout << "Accepted new connection on socket " << acceptResult << std::endl;
     return connectionSock;
 }
 
 void ServerSocket::send(std::string message) const {
-    int sendResult = ::send(_sockFD, message.c_str(), (int) message.size(), MSG_NOSIGNAL);
+    int sendResult = ::send(_sockFD, message.c_str(), (int) message.size(), 0);
 
     if (sendResult == -1) {
         throw new SocketException(strerror(errno));

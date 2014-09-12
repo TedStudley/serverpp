@@ -20,4 +20,8 @@ add_executable ( server++ source/Main.cpp
 
     ${COMMON_SOURCE_DIR}/Message/Message.cpp
     ${COMMON_SOURCE_DIR}/Message/HTTPRequest.cpp
-    ${COMMON_SOURCE_DIR}/Message/HTTPResponse.cpp )
+    ${COMMON_SOURCE_DIR}/Message/HTTPResponse.cpp
+
+    ${COMMON_SOURCE_DIR}/Servlet/Servlet.cpp
+
+    ${COMMON_SOURCE_DIR}/Servlet/TestServlet.cpp )
